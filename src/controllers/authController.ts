@@ -1,30 +1,22 @@
 import { Request, Response } from "express";
-import {
-  generateToken,
-  hashPassword,
-  comparePassword,
-} from "../services/authService";
-import User from "../models/userModel";
+import * as authService from "../services/authService";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { username, password } = req.body;
-  const hashedPassword = await hashPassword(password);
-  //   const newUser = new User({ username, password: hashedPassword });
-  //   await newUser.save();
-  //   const token = generateToken(newUser._id);
-  //   res.status(201).json({ token });
+  try {
+    const { username, password } = req.body;
+    const token = await authService.register(username, password);
+    res.status(201).json({ token });
+  } catch (err) {
+    res.status(400).json({ message: "something is wrong" });
+  }
 };
 
 export const login = async (req: Request, res: Response): Promise<void> => {
-  const { username, password } = req.body;
-  //   const user = await User.findOne({ username });
-  //   if (!user) {
-  //     return res.status(400).json({ message: 'Invalid username or password.' });
-  //   }
-  //   const validPassword = await comparePassword(password, user.password);
-  //   if (!validPassword) {
-  //     return res.status(400).json({ message: 'Invalid username or password.' });
-  //   }
-  //   const token = generateToken(user._id);
-  //   res.status(200).json({ token });
+  try {
+    const { username, password } = req.body;
+    const token = await authService.login(username, password);
+    res.status(200).json({ token });
+  } catch (err: any) {
+    res.status(400).json({ message: err.message || "Invalid credentials" });
+  }
 };

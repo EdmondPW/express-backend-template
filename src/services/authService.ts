@@ -1,24 +1,26 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import { generateToken, hashPassword, comparePassword } from "@/utils/auth";
+import { UserModel } from "@/models/userModel";
 
-const secret = process.env.JWT_SECRET || "your_jwt_secret_key";
-
-export const generateToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, secret, { expiresIn: "1h" });
+export const register = async (username: string, password: string) => {
+  const hashedPassword = await hashPassword(password);
+  const newUser = UserModel.create({ username, password: hashedPassword });
+  const token = generateToken(newUser.id.toString() + newUser.username);
+  return token;
 };
 
-export const verifyToken = (token: string): any => {
-  return jwt.verify(token, secret);
-};
+export const login = async (
+  username: string,
+  password: string
+): Promise<string> => {
+  const user = await UserModel.findByUsername(username);
+  if (!user) {
+    throw new Error("Invalid username or password");
+  }
 
-export const hashPassword = async (password: string): Promise<string> => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-};
+  const valid = await comparePassword(password, user.password);
+  if (!valid) {
+    throw new Error("Invalid username or password");
+  }
 
-export const comparePassword = async (
-  password: string,
-  hashedPassword: string
-): Promise<boolean> => {
-  return await bcrypt.compare(password, hashedPassword);
+  return generateToken(user.id.toString() + user.username);
 };
