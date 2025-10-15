@@ -1,8 +1,8 @@
 import express from "express";
-import corsMiddleware from "@/middleware/corsMiddleware";
-import authRoutes from "@/routes/authRoutes";
-import userRoutes from "@/routes/userRoutes";
-import { authenticateJWT } from "@/middleware/authMiddleware";
+import corsMiddleware from "@/src/middleware/corsMiddleware";
+import authRoutes from "@/src/routes/authRoutes";
+import userRoutes from "@/src/routes/userRoutes";
+import { authenticateJWT } from "@/src/middleware/authMiddleware";
 import { Request, Response } from "express";
 
 const app = express();

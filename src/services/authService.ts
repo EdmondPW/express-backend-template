@@ -1,5 +1,5 @@
-import { generateToken, hashPassword, comparePassword } from "@/utils/auth";
-import { UserModel } from "@/models/userModel";
+import { generateToken, hashPassword, comparePassword } from "@/src/utils/auth";
+import { UserModel } from "@/src/db/userModel";
 
 export const register = async (username: string, password: string) => {
   const hashedPassword = await hashPassword(password);
