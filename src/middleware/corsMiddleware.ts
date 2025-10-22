@@ -2,7 +2,9 @@ import cors from "cors";
 import { RequestHandler } from "express";
 
 const corsOptions = {
-  origin: "*", // Update this to your needs
+  origin: "*", // client/frontend origin
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: 200,
 };
 

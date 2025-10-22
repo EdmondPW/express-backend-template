@@ -1,0 +1,26 @@
+POST http://localhost:3000/api/auth/sign-up/email
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password1234",
+  "name": "John Doe"
+}
+
+### @name Login
+POST http://localhost:3000/api/auth/sign-in/email
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password1234"
+}
+
+###
+@s_token = "oFPTMeniFYCm6vVJh8TrOHE9v8ns9L0Y"
+##
+@token = {{Login.response.body.token}}
+### Protected Route – GET
+GET http://localhost:3000/protected-info HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json

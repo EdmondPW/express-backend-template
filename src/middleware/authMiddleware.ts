@@ -1,24 +1,34 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { auth } from "../features/auth/auth";
+import { fromNodeHeaders } from "better-auth/node";
 
-const secret = process.env.JWT_SECRET || "your_jwt_secret_key";
-
-export const authenticateJWT = (
+/**
+ * Middleware to enforce authentication.
+ * If the user has a valid session (or JWT), the user info
+ * will be attached to `req.user`, otherwise 401 Unauthorized.
+ */
+export async function authMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Access denied. No token provided." });
-  }
+) {
   try {
-    const decoded = jwt.verify(token, secret);
-    (req as any).user = decoded;
+    console.log(fromNodeHeaders(req.headers));
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session || !session.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    // Attach user info (and session) to the request object for later handlers
+    (req as any).user = session.user;
+    (req as any).session = session;
+
     next();
   } catch (err) {
-    res.status(400).json({ message: "Invalid token." });
+    console.error("Auth middleware error:", err);
+    return res.status(401).json({ error: "Unauthorized" });
   }
-};
+}

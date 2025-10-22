@@ -1,19 +1,28 @@
 import express from "express";
-import corsMiddleware from "@/src/middleware/corsMiddleware";
-import authRoutes from "@/src/routes/authRoutes";
-import userRoutes from "@/src/routes/userRoutes";
-import { authenticateJWT } from "@/src/middleware/authMiddleware";
+import corsMiddleware from "./middleware/corsMiddleware";
+import { auth } from "./features/auth/auth";
+import { toNodeHandler } from "better-auth/node";
 import { Request, Response } from "express";
+
+import PostRoutes from "./features/post/routes";
+import { authMiddleware } from "./middleware/authMiddleware";
 
 const app = express();
 
 app.use(corsMiddleware);
+app.all("/api/auth/{*any}", toNodeHandler(auth));
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+app.use("/api/post", PostRoutes);
+
+app.get("/status", (req: Request, res: Response) => {
   res.status(200).json({ msg: "server is running" });
 });
-app.use("/api/auth", authRoutes);
-app.use("/api/users", authenticateJWT, userRoutes);
+
+//just a route to test authentication
+app.get("/protected-info", authMiddleware, (req, res) => {
+  const user = (req as any).user;
+  res.json({ message: "You are authenticated", user });
+});
 
 export default app;
