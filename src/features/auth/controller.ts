@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 import * as authService from "./service";
 import { LoginInput, RegisterInput } from "./schema.zod";
 
@@ -13,9 +14,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       image,
       callbackURL,
     });
-    res.status(201).json({ data });
+    res.status(StatusCodes.CREATED).json({ data });
   } catch (err) {
-    res.status(400).json({ message: "something is wrong" });
+    res.status(StatusCodes.BAD_REQUEST).json({ message: "something is wrong" });
   }
 };
 
@@ -28,8 +29,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       rememberMe,
       callbackURL,
     });
-    res.status(200).json({ data });
+    res.status(StatusCodes.OK).json({ data });
   } catch (err: any) {
-    res.status(400).json({ message: err.message || "Invalid credentials" });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: err.message || "Invalid credentials" });
   }
 };

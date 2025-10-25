@@ -1,5 +1,5 @@
 import { createInsertSchema } from "drizzle-zod";
-import { user, account } from "./schema";
+import { user, account } from "../../db/schema/auth.schema";
 import { z } from "zod";
 
 // Note to one self:

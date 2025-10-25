@@ -3,7 +3,7 @@ import config from "./src/config/config";
 
 export default defineConfig({
   dialect: "postgresql",
-  schema: "./src/features/*/schema.ts",
+  schema: "./src/db/schema/*.schema.ts",
   out: "./src/db/migration",
   dbCredentials: {
     url: config.databaseUrl,

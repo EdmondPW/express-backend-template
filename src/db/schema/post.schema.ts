@@ -6,7 +6,7 @@ import {
   varchar,
   timestamp,
 } from "drizzle-orm/pg-core";
-import { user } from "../auth/schema";
+import { user } from "./auth.schema";
 
 //this is just for testing purpose
 export const Posts = pgTable("posts", {

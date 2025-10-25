@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createInsertSchema } from "drizzle-zod";
-import { Posts } from "./schema";
+import { Posts } from "../../db/schema/post.schema";
 
 const postInsertSchema = createInsertSchema(Posts);
 

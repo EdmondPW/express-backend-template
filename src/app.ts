@@ -1,15 +1,19 @@
 import express from "express";
+import helmet from "helmet";
 import corsMiddleware from "./middleware/corsMiddleware";
 import { auth } from "./features/auth/auth";
 import { toNodeHandler } from "better-auth/node";
 import { Request, Response } from "express";
 
-import PostRoutes from "./features/post/routes";
+import PostRoutes from "./features/addPost/routes";
 import { authMiddleware } from "./middleware/authMiddleware";
+import { limiter } from "./utils/rateLimiter";
 
 const app = express();
 
 app.use(corsMiddleware);
+app.use(helmet());
+app.use(limiter);
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 app.use(express.json());
 

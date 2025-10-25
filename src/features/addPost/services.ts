@@ -1,6 +1,6 @@
 import { CreatePostInput } from "./schema.zod";
 import { db } from "../../db/index";
-import { Posts } from "./schema";
+import { Posts } from "../../db/schema/post.schema";
 
 export const createPost = async ({
   title,

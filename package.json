@@ -11,7 +11,7 @@
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
     "start:dev": "cross-env NODE_ENV=development nodemon src/server.ts",
     "start:prod": "cross-env NODE_ENV=production node dist/server.js",
-    "auth:generate": "npx @better-auth/cli@latest generate --config src/features/auth/auth.ts --output src/features/auth/schema.ts"
+    "auth:generate": "npx @better-auth/cli@latest generate --config src/features/auth/auth.ts --output src/db/schema/auth.schema.ts"
   },
   "keywords": [],
   "author": "Edmond Praksoo Wardaya",
@@ -23,6 +23,8 @@
     "drizzle-orm": "^0.44.6",
     "drizzle-zod": "^0.8.3",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
     "http-status-codes": "^2.3.0",
     "pg": "^8.16.3",
     "zod": "^4.1.12"
