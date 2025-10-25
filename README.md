@@ -21,5 +21,8 @@ There is also <u>npm run start:prod</u> script to run an already compiled app on
 
 This is the thing planned to be implement into this project:
 
-- Implementation of better security such as rate limit.
 - Improve testing by implementing **jest** to the template project.
+- Implementation of **Winston** for application-level logging.
+- Implementation of **Prometheus** for metrics monitoring.
+- Generalize the Response API Structure.
+- Create seeder utility script for user table.
